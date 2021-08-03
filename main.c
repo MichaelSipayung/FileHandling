@@ -80,6 +80,8 @@ int main() {
     readString();
     //storeFormat();
     readFormat();
+    //writeBlock();
+    readBlock();
     return 0;
 }
 FILE *openFile(char*namaFile,char mode[]){
@@ -178,4 +180,39 @@ void readFormat(){
         exit(1);
     }
     fclose(formatingFile);
+}
+void writeBlock(){
+    printf("write block data to stream\n");
+    writeBl= openFile("wirteBlock.bin","wb");
+    Langganan.nama="michael";
+    Langganan.kode="ox-math";
+    Langganan.hutang=12;
+    if (writeBl){
+        fwrite(&Langganan,sizeof(Langganan),1,writeBl);
+    }
+    else{
+        printf("error occur.. can\'t write to stream\n");
+        exit(1);
+    }
+    fclose(writeBl);
+}
+void readBlock(){
+    printf("Read block data from stream\n");
+    writeBl=openFile("wirteBlock.bin","rb");
+    if (writeBl){
+        for (;;){
+            fread(&Langganan,sizeof(Langganan),1,writeBl);
+            if(feof(writeBl)){
+                break;
+            }
+            printf("Langganan Kode \t: %s\n",Langganan.kode);
+            printf("Langganan Nama\t: %s\n",Langganan.nama);
+            printf("Langganan hutang \t: %f", Langganan.hutang);
+        }
+    }
+    else{
+        printf("error occur ..");
+        exit(1);
+    }
+    fclose(writeBl);
 }
