@@ -7,7 +7,7 @@
 FILE *anotherSample,*experimen,*fileInt,*stringFile,*formatingFile,*writeBl,*stringTest;
 FILE *openFile(char*,char[]);
 FILE *experimentOpen(char*,char[]);
-FILE *blockData;
+FILE *blockData,*customFileRead,*csvFile,*makeCorre;
 void storeInt();
 void readInt();
 void storeStringFile();
@@ -19,9 +19,21 @@ struct {
     char nama[20];
     float hutang;
 }Langganan;
+struct{
+    int kode;
+    char nama[20];
+    float piutang;
+}anotherCostumer;
 void writeBlock();
 void readBlock();
 void writeString();
 void writeBlockData();
 void readBlockStruct();
+void customRead();
+void pointToPos();
+void morePointPos();
+void inputBlock();
+void viewFile();
+void writeCsv();
+void makeCorrection();
 #endif //UNTITLED_FILEHEADER_H

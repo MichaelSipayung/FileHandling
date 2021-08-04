@@ -82,6 +82,12 @@ int main() {
     //writeString();
     //writeBlockData();
     readBlockStruct();
+    //customRead();
+    pointToPos();
+    //morePointPos();
+    //viewFile();
+    //writeCsv();
+    makeCorrection();
     return 0;
 }
 FILE *openFile(char*namaFile,char mode[]){
@@ -285,4 +291,182 @@ void readBlockStruct(){
         exit(1);
     }
 }
+void customRead(){
+    customFileRead= openFile("book.txt","rb");
+    int n;
+    char c[128];
+
+    if (customFileRead){
+        printf("Ready to read data\n");
+    for(;;){
+        n= fread(c,1,128,customFileRead);
+        for (int i = 0; i < n; ++i) {
+            if (c[i]>=30&&c[i]<=126){
+                printf("%c",c[i]);
+            }
+            else{
+                printf(".");
+            }
+        }
+        if(feof(customFileRead)){break;}
+        }
+    }
+    else{
+        printf("Eror occur ...\n");
+        exit(1);
+    }
+    fclose(customFileRead);
+}
+void pointToPos(){
+    customFileRead= openFile("book.txt","rb");
+    int n ;
+    char c[128];
+    if (customFileRead){
+        printf("ready to read the data\n");
+        if(fseek(customFileRead,1,SEEK_SET)){//non zero will fail to test the condition
+            printf("Error can\'t read given possition\n");
+        }
+        n= fread(c,1,128,customFileRead);
+        for (int i = 0; i < n; ++i) {
+            printf("%c", c[i]);
+        }
+    }
+    else{
+        printf("Error occur .. can\'t read file \n");
+        exit(1);
+    }
+    fclose(customFileRead);
+}
+void morePointPos(){
+    customFileRead= openFile("contohPos.bin","wb");
+    char jawab;
+    if (customFileRead){
+        do {
+            printf("\nkode langganan ?");
+            fflush(stdin);
+            scanf("%d",&anotherCostumer.kode);
+            printf("Langganan nama \t: ");
+            fflush(stdin);
+            scanf("%[^\n]",anotherCostumer.nama);
+            printf("Piutang langganan \t:");
+            fflush(stdin);
+            scanf("%f",&anotherCostumer.piutang);
+            if (fseek(customFileRead,(anotherCostumer.kode-1)* sizeof(anotherCostumer),SEEK_SET)){
+                printf("Wrong point ...");
+                exit(1);
+            }
+            fwrite(&anotherCostumer,sizeof(anotherCostumer),1,customFileRead);
+            printf("Insert more data ?");
+            fflush(stdin);
+            scanf("%c",&jawab);
+            printf("\n");
+        }while(jawab=='y'||jawab=='Y');
+    }
+    else{
+        printf("Eror occurs ....");
+        exit(1);
+    }
+    fclose(customFileRead);
+}
+void viewFile(){
+    customFileRead= openFile("contohPos.bin","rb");
+    int kodeLangganan;
+    char jawab;
+    if (customFileRead){
+        printf("Ok read the given position \n");
+        do {
+            printf("kode langganan ? ");
+            scanf("%d",&kodeLangganan);
+            if(fseek(customFileRead,(kodeLangganan-1)*sizeof(anotherCostumer),SEEK_SET)){
+                printf("Error occurs .. ");
+                continue;//continue read another customer code
+            }
+            fread(&anotherCostumer,sizeof(anotherCostumer),1,customFileRead);
+            if(feof(customFileRead)||anotherCostumer.kode!=kodeLangganan){
+                printf("Sorry  data not found ...");
+            }
+            else{
+                printf("\n");
+                printf("Kode Langganan\t: %d\n", anotherCostumer.kode);
+                printf("Nama Langganan\t: %s\n", anotherCostumer.nama);
+                printf("Langganan piutang\t: %f\n", anotherCostumer.piutang);
+            }
+            printf("\n");
+            printf("Looking for another customer \t:");
+            fflush(stdin);
+            scanf("%c",&jawab);
+        }while(jawab=='y'||jawab=='Y');
+    }
+    else{
+        printf("Eror occurs ..");
+        exit(1);
+    }
+}
+void writeCsv(){
+    csvFile= openFile("book.csv","w+");
+    if (csvFile){
+        printf("\ncsv ready ...");
+        fprintf(csvFile,"%s","nama;");
+        fprintf(csvFile,"%s","Kota;");
+    }
+    else{
+        printf("Fail to write csv ...");
+        exit(1);
+    }
+}
+void makeCorrection(){
+    makeCorre= openFile("contohPos.bin","rb");
+    int kodeLangganan;
+    char jawab;
+    long int PosisiSekarang;
+    if(makeCorre){
+        printf("Make correction to given record ....");
+        do{
+            printf("kode langganan \t: ");
+            scanf("%d",&kodeLangganan);
+            if(fseek(makeCorre,(kodeLangganan-1)* sizeof(anotherCostumer),SEEK_SET)){
+                printf("sorry error occurs, invalid position ...");
+                continue;
+            }
+            if ((PosisiSekarang= ftell(makeCorre))==-1L){
+                printf("miss posistion to read ...");
+                exit(1);
+            }
+            fread(&anotherCostumer,sizeof(anotherCostumer),1,makeCorre);
+            if (feof(makeCorre)||anotherCostumer.kode!=kodeLangganan){
+                printf("There isn\'t exist this costumer code ..");
+            }
+            else{
+                printf("\n");
+                printf("kode langganan \t: %d\n", anotherCostumer.kode);
+                printf("Nama langganan \t: %s\n", anotherCostumer.nama);
+                printf("hutang langganan \t: %f\n", anotherCostumer.piutang);
+                printf("\n");
+                printf("Please input for correction \n");
+                printf("Nama langganan \t: ");
+                fflush(stdin);
+                scanf("%[^\n]",anotherCostumer.nama);
+                printf("Piutang langganan \t: ");
+                fflush(stdin);
+                scanf("%f",&anotherCostumer.piutang);
+                if (fseek(makeCorre,PosisiSekarang,SEEK_SET)){
+                    printf("sorry .. something wrong to take the position");
+                    exit(1);
+                }
+                fwrite(&anotherCostumer,sizeof(anotherCostumer),1,makeCorre);
+                fflush(makeCorre);
+            }
+            printf("\n");
+            printf("Akan mengoreksi data langganan yang lain .... ?");
+            fflush(stdin);
+            scanf("%c",&jawab);
+            printf("\n");
+        }while(jawab=='y'||jawab=='Y');
+    }
+    else{
+        printf("error occur ....");
+        exit(1);
+    }
+}
+
 
