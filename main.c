@@ -76,11 +76,12 @@ int main() {
     //storeStringFile();
     readString();
     //storeFormat();
-    readFormat();
+    //readFormat();
     //writeBlock();
-    readBlock();
-    writeString();
-
+    //readBlock();
+    //writeString();
+    //writeBlockData();
+    readBlockStruct();
     return 0;
 }
 FILE *openFile(char*namaFile,char mode[]){
@@ -180,6 +181,7 @@ void readFormat(){
     }
     fclose(formatingFile);
 }
+/*
 void writeBlock(){
     printf("write block data to stream\n");
     writeBl= openFile("wirteBlock.bin","wb");
@@ -195,6 +197,7 @@ void writeBlock(){
     }
     fclose(writeBl);
 }
+ */
 void readBlock(){
     printf("Read block data from stream\n");
     writeBl=openFile("wirteBlock.bin","rb");
@@ -229,12 +232,57 @@ void writeString(){
     //reading the current text
     stringTest= openFile("sample.txt","r");
     printf("Read the value from given position\n");
-    if(fseek(stringTest,250,SEEK_CUR)){
-        printf("Check status ...\n");
-    }
     char readData[250];
     while (fgets(readData,250,stringTest)){
         printf("%s", readData);
     }
     fclose(stringTest);
 }
+void writeBlockData(){
+    printf("Writing a record .....\n");
+    blockData= openFile("langganan.bin","wb");
+    int i,n=5;
+    if (blockData){
+        printf("Jumlah dari data\t: ");
+        //scanf("%d",n);
+        for (int j = 0; j < n; ++j) {
+            printf("Data ke \t: %d \n",j+1);
+            printf("Kode Langganan \t:");
+            fflush(stdin);
+            scanf("%s",Langganan.kode);
+            printf("Nama Langganan \t:");
+            fflush(stdin);
+            scanf("%[^\n]",Langganan.nama);
+            printf("Langganan Piutang \t:");
+            fflush(stdin);
+            scanf("%f",&Langganan.hutang);
+            printf("\n");
+            fwrite(&Langganan,sizeof(Langganan),1,blockData);
+        }
+    }
+    else{
+        printf("error occurs ...");
+        exit(1);
+    }
+    fclose(blockData);
+}
+void readBlockStruct(){
+    blockData= openFile("langganan.bin","rb");
+    printf("Reading block data\n");
+    int i=1;
+    if (blockData){
+        for (;;){
+            fread(&Langganan, sizeof(Langganan),1,blockData);
+            if(feof(blockData)){break;}
+            printf("Data langganan ke \t: %d\n",++i);
+            printf("kode Langganan\t:%s\n",Langganan.kode);
+            printf("Nama Langganan\t:%s\n",Langganan.nama);
+            printf("Hutang Langganan\t:%f\n",Langganan.hutang);
+        }
+    }
+    else{
+        printf("Eror occur .....\n");
+        exit(1);
+    }
+}
+

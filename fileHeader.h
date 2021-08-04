@@ -7,6 +7,7 @@
 FILE *anotherSample,*experimen,*fileInt,*stringFile,*formatingFile,*writeBl,*stringTest;
 FILE *openFile(char*,char[]);
 FILE *experimentOpen(char*,char[]);
+FILE *blockData;
 void storeInt();
 void readInt();
 void storeStringFile();
@@ -14,12 +15,13 @@ void readString();
 void storeFormat();
 void readFormat();
 struct {
-    char *kode;
-    char *nama;
+    char kode[5];
+    char nama[20];
     float hutang;
 }Langganan;
 void writeBlock();
 void readBlock();
 void writeString();
-
+void writeBlockData();
+void readBlockStruct();
 #endif //UNTITLED_FILEHEADER_H
