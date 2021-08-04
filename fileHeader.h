@@ -1,11 +1,10 @@
-//
-// Created by zyrex on 8/3/2021.
-//
-
 #ifndef UNTITLED_FILEHEADER_H
 #define UNTITLED_FILEHEADER_H
 #include <stdio.h>
-FILE *anotherSample,*experimen,*fileInt,*stringFile,*formatingFile,*writeBl;
+#include <stdlib.h>
+#include <conio.h>
+#include <ctype.h>
+FILE *anotherSample,*experimen,*fileInt,*stringFile,*formatingFile,*writeBl,*stringTest;
 FILE *openFile(char*,char[]);
 FILE *experimentOpen(char*,char[]);
 void storeInt();
@@ -21,4 +20,6 @@ struct {
 }Langganan;
 void writeBlock();
 void readBlock();
+void writeString();
+
 #endif //UNTITLED_FILEHEADER_H

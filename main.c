@@ -1,6 +1,3 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <conio.h>
 #include "fileHeader.h"
 int main() {
     printf("File handling in Action \n");
@@ -82,6 +79,8 @@ int main() {
     readFormat();
     //writeBlock();
     readBlock();
+    writeString();
+
     return 0;
 }
 FILE *openFile(char*namaFile,char mode[]){
@@ -215,4 +214,27 @@ void readBlock(){
         exit(1);
     }
     fclose(writeBl);
+}
+void writeString(){
+    stringTest= openFile("sample.txt","w+");
+    if(stringTest){
+        printf("Write and readt text, from set position\n");
+        fputs("michael sipayung, address : madison avenue\nstatus: student\n",stringTest);
+    }
+    else{
+        printf("Error occurs\n");
+        exit(1);
+    }
+    fclose(stringTest);
+    //reading the current text
+    stringTest= openFile("sample.txt","r");
+    printf("Read the value from given position\n");
+    if(fseek(stringTest,250,SEEK_CUR)){
+        printf("Check status ...\n");
+    }
+    char readData[250];
+    while (fgets(readData,250,stringTest)){
+        printf("%s", readData);
+    }
+    fclose(stringTest);
 }
