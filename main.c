@@ -89,7 +89,13 @@ int main() {
     //writeCsv();
     //makeCorrection();
     //seekToEnd();
-    alternatifFindPost();
+    //alternatifFindPost();
+    int *alloc;
+    alloc= malloc(4* sizeof(*alloc));
+    if(alloc){
+        printf("Success to allocated the memory ....\n");
+    }
+
     return 0;
 }
 FILE *openFile(char*namaFile,char mode[]){
