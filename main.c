@@ -87,7 +87,9 @@ int main() {
     //morePointPos();
     //viewFile();
     //writeCsv();
-    makeCorrection();
+    //makeCorrection();
+    //seekToEnd();
+    alternatifFindPost();
     return 0;
 }
 FILE *openFile(char*namaFile,char mode[]){
@@ -467,6 +469,90 @@ void makeCorrection(){
         printf("error occur ....");
         exit(1);
     }
+}
+void seekToEnd(){
+    seekEnd=openFile("contohPos.bin","w+b");
+    if(seekEnd){
+        printf("Put to the end of word .... ");
+        if(fseek(seekEnd,0,SEEK_END)){
+            printf("wrong position ....");
+            exit(1);
+        }
+        fwrite(&anotherCostumer,sizeof(anotherCostumer),1,seekEnd);
+        anotherCostumer.kode=13;
+        anotherCostumer.piutang=90.98;
+        //set to first position
+        if(fseek(seekEnd,0,SEEK_SET)){
+            printf("wrong .. can\'t set to first line ...\n");
+        }
+        printf("print all with the last input ...");
+        for(;;){
+            fread(&anotherCostumer, sizeof(anotherCostumer),1,seekEnd);
+            if(feof(seekEnd)){
+                break;
+            }
+            printf("Kode langganan\t: %d\n",anotherCostumer.kode);
+            printf("nama langganan\t: %s\n",anotherCostumer.nama );
+            printf("piutang langganan\t: %f\n",anotherCostumer.piutang);
+        }
+
+    }
+    else{
+        printf("something went wrong ... ");
+        exit(1);
+    }
+    fclose(seekEnd);
+
+}
+void alternatifFindPost(){
+    costumPost= openFile("contohPos.bin","r+b");
+    int kodeLang;
+    char jawab;
+    fpos_t posisiSekarang;
+    if(costumPost){
+        printf("file ready to modify ....\n");
+        do {
+            printf("Kode langganan");
+            scanf("%d",&kodeLang);
+            if(fseek(costumPost,(kodeLang-1)* sizeof(anotherCostumer),SEEK_SET)){
+                printf("something wrong ...");
+                continue;
+            }
+            if(fgetpos(costumPost,&posisiSekarang)!=0){
+                printf("Eror occurs ...");
+                exit(1);
+            }
+            fread(&anotherCostumer, sizeof(anotherCostumer),1,costumPost);
+            if(feof(costumPost)||anotherCostumer.kode!=kodeLang){
+                printf("Eror occurs , can\'t find the given code ...\n");
+            }
+            else{
+                printf("\n");
+                printf("langganan kode \t: %d\n",anotherCostumer.kode);
+                printf("langgana name \t: %s\n",anotherCostumer.nama);
+                printf("\n");
+                printf("MAKE CORRECTION \t: .....");
+                printf("Nama langganan \t: ");
+                fflush(stdin);
+                scanf("%[^\n]",anotherCostumer.nama);
+                if(fsetpos(costumPost,&posisiSekarang)!=0){
+                    printf("Ada kesalahn mengembalikan posisi ....");
+                    exit(1);
+                }
+                fwrite(&anotherCostumer,sizeof(anotherCostumer),1,costumPost);
+                fflush(costumPost);
+            }
+            printf("koreksi data lagi \t: (y/n)");
+            fflush(stdin);
+            scanf("%c",&jawab);
+            printf("\n");
+        }while(jawab=='y'||jawab=='Y');
+    }
+    else{
+        printf("error occurs ...");
+        exit(1);
+    }
+    fclose(costumPost);
 }
 
 

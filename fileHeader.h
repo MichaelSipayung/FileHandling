@@ -8,6 +8,7 @@ FILE *anotherSample,*experimen,*fileInt,*stringFile,*formatingFile,*writeBl,*str
 FILE *openFile(char*,char[]);
 FILE *experimentOpen(char*,char[]);
 FILE *blockData,*customFileRead,*csvFile,*makeCorre;
+FILE *seekEnd,*costumPost;
 void storeInt();
 void readInt();
 void storeStringFile();
@@ -36,4 +37,6 @@ void inputBlock();
 void viewFile();
 void writeCsv();
 void makeCorrection();
+void seekToEnd();
+void alternatifFindPost();
 #endif //UNTITLED_FILEHEADER_H
