@@ -95,7 +95,15 @@ int main() {
     if(alloc){
         printf("Success to allocated the memory ....\n");
     }
-
+    //alternaError();
+    //alteropen();
+    //showOut();
+    //openTwo();
+    //ifInDisk("formating.txt");
+    //renameFile("contoh.txt","newContoh.txt");
+    //removeFile("intRead.bin");
+    fileNumber();
+    showSize();
     return 0;
 }
 FILE *openFile(char*namaFile,char mode[]){
@@ -560,5 +568,146 @@ void alternatifFindPost(){
     }
     fclose(costumPost);
 }
+void alternaError(){
+    erortest= openFile("book.txt","r+b");
+    if(ferror(erortest)==0){
+        perror("wrong ...");
+        clearerr(erortest);
+        exit(1);
+    }
+    else{
+        printf("ready to open ...");
+
+    }
+    fclose(erortest);
+}
+void alteropen(){
+    int *array;
+    array= malloc(8*sizeof(*array));
+
+    if(freopen("contoh.txt","w",stdout)==NULL){
+        printf("Wrong ... ");
+        exit(1);
+    }
+    printf("write to stream not to terminal ....\n");
+    printf("write again to stream ....\n");
+    for (int i = 0; i < 7; ++i) {
+     array[i]=i;
+     printf("%d\n",array[i]);
+    }
+    free(array);
+}
+void showOut(){
+    if(freopen("stdin.txt","w",stdin)==NULL){
+        printf("wrong .....");
+        exit(1);
+    }
+    char mode[20];
+    printf("mode file in c \t: ");
+    fflush(stdin);
+    //scanf("%[^\n]",mode);
+}
+void openTwo(){
+    char c[PANJANG_BYTE],jawab;
+    unsigned n;
+    unsigned long int jumlahByte=0;
+    source= fopen("book.txt","rb");
+    if(source){
+        jawab='T';
+        while (jawab=='t'||jawab=='T'){
+            if((destination= fopen("destination.txt","r"))==NULL){
+                printf("Wrong ....");
+                break;
+            }
+            else{
+                printf("Sudah ada ditampungi ... (y | t) ?");
+                fflush(stdin);
+                scanf("%c",&jawab);//bug
+                fclose(destination);
+            }
+        }
+    }
+    else{
+        printf("sorce not available ...");
+        exit(1);
+    }
+    destination= fopen("destination.txt","wb");
+    if(destination==NULL){
+        printf("Sorry wrong .. can\'t open file \n");
+        exit(1);
+    }
+    printf("\n");
+    do {
+        n=fread(c,1,PANJANG_BYTE,source);
+        fwrite(c,1,n,destination);
+        jumlahByte+=n;
+    }while(!feof(source));
+    printf("finish ....");
+    printf("Jumlah byte yang disalin .... \t: %d\n", jumlahByte);
+
+    //fcloseall();
+    fclose(destination);
+    fclose(source);
+}
+void ifInDisk();
+void ifInDisk(char *namaFile){
+    printf("check if the given file still exist \t:\n");
+    if((access(namaFile,0))==0){
+        printf("good file is exist   .... \n");
+    }
+    else{
+        printf("Wrong , not exist ...");
+        exit(1);
+    }
+}
+void renameFile(char*currentName,char*newName){
+    if((rename(currentName,newName))==0){
+        printf("success to rename ....\n");
+    }
+    else{
+        printf("wrong, please check the current file ...");
+        exit(1);
+    }
+
+}
+void removeFile(const char*namaFile){
+    printf("Try to remove file ...");
+    if((unlink(namaFile))==0){
+        printf("%s success dihapus ....\n" ,namaFile );
+    }
+    else{
+        printf("Sorry not exist ...\n");
+        exit(1);
+    }
+}
+void fileNumber(){
+    printf("first check if file exist\n");
+    source  = openFile("string.txt","rb");
+    if(source){
+        printf("nomor pengenal file \t: %d\n", fileno(source));
+    }
+    else{
+        printf("Error occurs ...\n");
+        exit(1);
+    }
+    fclose(source);
+}
+void showSize(){
+    source= openFile("sample.txt","r");
+    int handle;
+    if (source){
+        printf("file exist\n");
+        handle= fileno(source);
+        printf("size is \t: %d byte\n", filelength(handle));
+    }
+    else{
+        printf("wrong .. file not exist ...");
+        exit(1);
+    }
+    fclose(source);
+}
+
+
+
 
 

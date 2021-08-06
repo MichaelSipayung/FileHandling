@@ -4,11 +4,14 @@
 #include <stdlib.h>
 #include <conio.h>
 #include <ctype.h>
+#include <io.h> //file tidak berpenyangga protorype
+#define PANJANG_BYTE 256
 FILE *anotherSample,*experimen,*fileInt,*stringFile,*formatingFile,*writeBl,*stringTest;
 FILE *openFile(char*,char[]);
 FILE *experimentOpen(char*,char[]);
 FILE *blockData,*customFileRead,*csvFile,*makeCorre;
-FILE *seekEnd,*costumPost;
+FILE *seekEnd,*costumPost,*erortest;
+FILE *source,*destination;
 void storeInt();
 void readInt();
 void storeStringFile();
@@ -39,4 +42,14 @@ void writeCsv();
 void makeCorrection();
 void seekToEnd();
 void alternatifFindPost();
+void alternaError();
+void alteropen();
+void showOut();
+void openTwo();
+void inBuffer();
+void ifInDisk(char*);
+void renameFile(char*,char*);
+void removeFile(const char*);
+void fileNumber();
+void showSize();
 #endif //UNTITLED_FILEHEADER_H
