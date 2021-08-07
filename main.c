@@ -1,4 +1,5 @@
 #include "fileHeader.h"
+#include "overview.h"
 int main() {
     printf("File handling in Action \n");
     FILE *pointFile;
@@ -72,18 +73,18 @@ int main() {
         printf("File still exist\n");
     }
     //storeInt();
-    readInt();
+    //readInt();
     //storeStringFile();
-    readString();
+    //readString();
     //storeFormat();
     //readFormat();
     //writeBlock();
     //readBlock();
     //writeString();
     //writeBlockData();
-    readBlockStruct();
+    //readBlockStruct();
     //customRead();
-    pointToPos();
+    //pointToPos();
     //morePointPos();
     //viewFile();
     //writeCsv();
@@ -102,8 +103,10 @@ int main() {
     //ifInDisk("formating.txt");
     //renameFile("contoh.txt","newContoh.txt");
     //removeFile("intRead.bin");
-    fileNumber();
-    showSize();
+    //fileNumber();
+    //showSize();
+    celciusCon();
+    reverseOrder();
     return 0;
 }
 FILE *openFile(char*namaFile,char mode[]){
@@ -706,6 +709,33 @@ void showSize(){
     }
     fclose(source);
 }
+void celciusCon(){
+    float fahr,celcius,lower,upper,step;
+    lower=0; upper=300;step=20;
+    printf("Celcius\tFahrenheit\n");
+    fahr=lower;
+    while (fahr<=upper){
+        celcius=5*(fahr-32)/9;
+        printf("%3.0f\t%6.1f\n",fahr,celcius);//three digits wide and si
+        fahr+=step;
+    }
+}
+void reverseOrder(){
+    float fahr,celcius,step,lower,upper;
+    lower =0;
+    upper=300;
+    step=20;
+    fahr =upper;
+    printf("-----------------------------\n");
+    printf("Celcius\tFahrenheit\n");
+    printf("-----------------------------\n");
+    while (lower<=fahr){
+        celcius=5*(fahr-32)/9;
+        printf("%3.0f\t%6.1f\n",fahr,celcius);//three digits wide and
+        fahr-=step;
+    }
+}
+
 
 
 
